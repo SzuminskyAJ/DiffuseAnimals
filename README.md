@@ -1,0 +1,2 @@
+# DiffuseAnimals
+McGill Hackathon
