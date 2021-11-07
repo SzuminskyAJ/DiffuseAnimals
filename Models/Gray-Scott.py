@@ -5,7 +5,7 @@ import imageio
 import os
 
 steps = 10000
-size=150
+size = 150
 filenames = []
 
 Du = 0.16
@@ -75,5 +75,3 @@ with imageio.get_writer('mygif.gif', mode='I') as writer:
 
 for filename in set(filenames):
     os.remove(filename)
-
-

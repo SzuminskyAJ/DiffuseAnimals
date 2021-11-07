@@ -1,4 +1,3 @@
 window.onload = () => {
-    alert('Tu pue');
+    //alert('Tu pue');
 };
-
