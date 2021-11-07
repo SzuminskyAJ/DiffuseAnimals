@@ -1,2 +1,2 @@
-# DiffuseAnimals
-McGill Hackathon
+# Diffuse Animals
+![Logo](Logo.png)
