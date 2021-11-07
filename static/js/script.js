@@ -3,8 +3,6 @@ window.onload = () => {
 };
 
 function onSubmit(e) {
-  e.preventDefault();
-  console.log('ici');
   const form = document.getElementById('f_form');
   const values = new FormData(form);
   const vals = Object.fromEntries(values);
@@ -31,5 +29,4 @@ function onSubmit(e) {
   }).catch(e => {
     alert(e);
   });
-  return false;
 }
