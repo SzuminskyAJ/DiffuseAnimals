@@ -53,3 +53,8 @@ body {
 input[type="submit"] {
  cursor: pointer;
 }
+
+input[type="submit"]:disabled {
+ color: #555;
+ background: #DDD;
+}

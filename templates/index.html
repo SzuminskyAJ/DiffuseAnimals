@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
 {% block fitzhugh_form %}
     {{ super() }}
+    <input type="hidden" name="Model" value="FitzHugh-Nagumo">
+    <input type="hidden" name="InitialModel" value="Random">
+    <input type="hidden" name="noise" value="0.05">
+    <input type="hidden" name="size" value="100">
     <div class="w3-container">
       <p>Diffusion coefficient of activator</p>
       <div class="slider">
@@ -51,7 +55,7 @@
       </div>
     </div>
     <div class="w3-container" style="padding: 60px">
-      <input class="w3-input" type=submit value=Generate>
+      <input class="w3-input" type=submit value=Generate id="submit-button">
     </div>
 
 {% endblock %}
