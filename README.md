@@ -7,6 +7,11 @@ Reaction-diffusion equations can be utilized in order to describe processes of n
 
 ![RDModels](RDModels.png)
 
+
+## Pattern Generation
+We provide a web app with as an interface to modify the variables of reaction-diffusion equations to produce a GIF of the corresponding biological pattern.
+
+
 ## [McGill Physics Hackathon](https://www.physics.mcgill.ca/hackathon/) 2021 Team Members:
 * Ryan Senoune
 * Austin J. Szuminsky
