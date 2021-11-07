@@ -1,24 +1,32 @@
 {% extends "layout.html" %}
-{% block fitzhugh_form %}
-    {{ super() }}
-    <input type="hidden" name="Model" value="FitzHugh-Nagumo">
-    <input type="hidden" name="InitialModel" value="Random">
+{% block general_form %}
     <input type="hidden" name="noise" value="0.05">
-    <input type="hidden" name="size" value="100">
+    <input type="hidden" name="size" value="256">
     <div class="w3-container">
       <p>Diffusion coefficient of activator</p>
       <div class="slider">
-        <input type="range" name="diffusionA" min="0" max="1" value="0.05" oninput="diffCoefA.innerText = this.value" step="0.01">
-        <p id="diffCoefA">0.05</p>
+        <input type="range" name="diffusionA" min="0" max="1" value="0.16" oninput="diffCoefA.innerText = this.value" step="0.01">
+        <p id="diffCoefA">0.16</p>
       </div>
     </div>
     <div class="w3-container">
       <p>Diffusion coefficient of inhibitor</p>
       <div class="slider">
-        <input type="range" name="diffusionB" min="0" max="2" value="0.1" oninput="diffCoefB.innerText = this.value" step="0.01">
-        <p id="diffCoefB">0.1</p>
+        <input type="range" name="diffusionB" min="0" max="2" value="0.08" oninput="diffCoefB.innerText = this.value" step="0.01">
+        <p id="diffCoefB">0.08</p>
       </div>
     </div>
+    <div class="w3-container">
+      <p>Number of steps</p>
+      <div class="slider">
+        <input type="range" name="steps" min="0" max="100000" value="10000" oninput="Steps.innerText = this.value" step="10">
+        <p id="Steps">10000</p>
+      </div>
+    </div>
+{% endblock %}
+
+{% block fitzhugh_form %}
+    {{ super() }}
     <div class="w3-container">
       <p>Tau (time constant)</p>
       <div class="slider">
@@ -29,76 +37,40 @@
     <div class="w3-container">
       <p>K</p>
       <div class="slider">
-        <input type="range" name="k" min="0" max="2" value="0.1" oninput="K.innerText = this.value" step="0.01">
-        <p id="K">0.1</p>
+        <input type="range" name="k" min="0" max="2" value="0.06" oninput="K.innerText = this.value" step="0.01">
+        <p id="K">0.06</p>
       </div>
     </div>
     <div class="w3-container">
-      <p>Feed rate</p>
+      <p>λ</p>
       <div class="slider">
-        <input type="range" name="s" min="0" max="2" value="0.1" oninput="Feed.innerText = this.value" step="0.01">
-        <p id="Feed">0.1</p>
+        <input type="range" name="L" min="0" max="2" value="1" oninput="L.innerText = this.value" step="0.01">
+        <p id="L">1</p>
       </div>
     </div>
     <div class="w3-container">
-      <p>Kill rate</p>
+      <p>σ</p>
       <div class="slider">
-        <input type="range" name="L" min="0" max="2" value="0.1" oninput="Kill.innerText = this.value" step="0.01">
-        <p id="Kill">0.1</p>
+        <input type="range" name="s" min="0" max="2" value="1" oninput="s.innerText = this.value" step="0.01">
+        <p id="s">1</p>
       </div>
     </div>
-    <div class="w3-container">
-      <p>Number of steps</p>
-      <div class="slider">
-        <input type="range" name="steps" min="0" max="100000" value="1000" oninput="Steps.innerText = this.value" step="10">
-        <p id="Steps">1000</p>
-      </div>
-    </div>
-    <div class="w3-container" style="padding: 60px">
-      <input class="w3-input" type=submit value=Generate id="submit-button">
-    </div>
-
 {% endblock %}
 
 {% block grey_form %}
     {{ super() }}
     <div class="w3-container">
-      <p>Diffusion coefficient of activator</p>
-      <div class="slider">
-        <input type="range" min="0" max="1" value="0.05" oninput="diffCoefA.innerText = this.value" step="0.01">
-        <p id="diffCoefA">0.05</p>
-      </div>
-    </div>
-    <div class="w3-container">
-      <p>Diffusion coefficient of inhibitor</p>
-      <div class="slider">
-        <input type="range" min="0" max="2" value="0.1" oninput="diffCoefB.innerText = this.value" step="0.01">
-        <p id="diffCoefB">0.1</p>
-      </div>
-    </div>
-    <div class="w3-container">
       <p>Feed rate</p>
       <div class="slider">
-        <input type="range" min="0" max="2" value="0.1" oninput="Feed.innerText = this.value" step="0.01">
-        <p id="Feed">0.1</p>
+        <input type="range" min="0" max="0.1" value="0.035" oninput="Feed.innerText = this.value" step="0.001" name="Feed">
+        <p id="Feed">0.035</p>
       </div>
     </div>
     <div class="w3-container">
       <p>Kill rate</p>
       <div class="slider">
-        <input type="range" min="0" max="2" value="0.1" oninput="Kill.innerText = this.value" step="0.01">
-        <p id="Kill">0.1</p>
+        <input type="range" min="0" max="0.1" value="0.06" oninput="Kill.innerText = this.value" step="0.001" name="Kill">
+        <p id="Kill">0.06</p>
       </div>
     </div>
-    <div class="w3-container">
-      <p>Number of steps</p>
-      <div class="slider">
-        <input type="range" min="0" max="10000" value="1000" oninput="Steps.innerText = this.value" step="10">
-        <p id="Steps">1000</p>
-      </div>
-    </div>
-    <div class="w3-container" style="padding: 60px">
-      <input class="w3-input" type=submit value=Generate>
-    </div>
-
 {% endblock %}

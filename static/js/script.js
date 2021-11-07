@@ -1,8 +1,8 @@
 window.onload = () => {
-    //alert('Tu pue');
+  selectForm(document.getElementsByName('Model')[0]);
 };
 
-function onSubmit(e) {
+function onSubmit() {
   const form = document.getElementById('f_form');
   const values = new FormData(form);
   const vals = Object.fromEntries(values);
@@ -35,4 +35,14 @@ function onSubmit(e) {
     button.value = "Generate";
     alert(e);
   });
+}
+
+function selectForm(el) {
+  if (el.value == 'Gray-Scott') {
+    document.getElementById('fhn').classList.add('hidden');
+    document.getElementById('gs').classList.remove('hidden');
+  } else {
+    document.getElementById('fhn').classList.remove('hidden');
+    document.getElementById('gs').classList.add('hidden');
+  }
 }

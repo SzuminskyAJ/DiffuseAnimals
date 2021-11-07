@@ -11,7 +11,6 @@
           .w3-bar-block .w3-bar-item {padding:20px}
           .w3-card {padding:64px; margin:100px}
         </style>
-
     </head>
 
     <body>
@@ -19,11 +18,28 @@
       <h1>Let's diffuse some animals</h1>
       <p class="w3-large">This webapp models a reaction-diffusion system using two different sets of partial differential equations. Pick some values for the parameters of the simulation!</p>
         <div class="w3-container">
-          <form id="f_form" enctype=multipart/form-data style="padding:32px" onsubmit="event.preventDefault(); onSubmit(event); return false;" action="">
-            {%block fitzhugh_form%}{%endblock%}
-          </form>
-          <form id="g_form" enctype=multipart/form-data style="padding:32px" onsubmit="event.preventDefault(); onSubmit(event); return false;" class="hidden" action="">
-            {%block grey_form%}{%endblock%}
+          <form id="f_form" enctype=multipart/form-data style="padding:32px" onsubmit="event.preventDefault(); onSubmit(); return false;" action="">
+            {%block general_form%}{%endblock%}
+            <div class="w3-container">
+              <p>Initial pattern:</p>
+              <select name="InitialModel">
+                <option value="Circle">Circle</option>
+                <option value="Square" selected>Square</option>
+                <option value="Random">Random</option>
+              </select>
+            </div>
+            <div class="w3-container">
+              <p>Diffusion model:</p>
+              <select name="Model" onchange="selectForm(this)">
+                <option value="FitzHugh-Nagumo">FitzHugh-Nagumo</option>
+                <option value="Gray-Scott" selected>Gray-Scott</option>
+              </select>
+            </div>
+            <div id="fhn" class="hidden">{%block fitzhugh_form%}{%endblock%}</div>
+            <div id="gs">{%block grey_form%}{%endblock%}</div>
+            <div class="w3-container" style="padding: 60px">
+              <input class="w3-input" type=submit value=Generate id="submit-button">
+            </div>
           </form>
           <img id="output">
 

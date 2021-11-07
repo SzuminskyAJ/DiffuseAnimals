@@ -39,13 +39,13 @@ def initSquare(u, v, size):
     u[int(size/2-20):int(size/2+20),int(size/2-20):int(size/2+20)] = 0.50
     v[int(size/2-20):int(size/2+20),int(size/2-20):int(size/2+20)] = 0.25
 
-def FitzHughModel(u, v, Lu, Lv, a, b, tau, k, L, s):
+def FitzHughModel(u, v, Lu, Lv, a, b, tau, k, L, s, **extra):
     dt = .001  # time step
     # We update the variables. -- this is the part that changed the most!
     u += dt * (a * Lu + L * u - u ** 3 - k - s * v)
     v += dt * (b * Lv + u - v) / tau
 
-def GrayScottModel(u, v, Lu, Lv, diffusionRateA, diffusionRateB, Feed, Kill):
+def GrayScottModel(u, v, Lu, Lv, diffusionRateA, diffusionRateB, Feed, Kill, **extra):
     u += (diffusionRateA*Lu - (u*v*v) + Feed *(1-u))
     v += (diffusionRateB*Lv + (u*v*v) - (Feed+Kill)*v)
 
