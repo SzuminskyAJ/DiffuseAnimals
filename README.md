@@ -27,4 +27,4 @@ The zebrafish pattern can be produced by using the interface with the parameters
 
 
 ## License
-BSD
+BSD 3-Clause License
