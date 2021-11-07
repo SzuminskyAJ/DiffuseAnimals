@@ -4,9 +4,45 @@
         <script type="text/javascript" src="/static/js/script.js"></script>
         <link rel="stylesheet" href="/static/css/style.css" />
         <title>{%block title %}{%endblock%}</title>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+        <style>
+          h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
+          .w3-bar-block .w3-bar-item {padding:20px}
+          .w3-card {padding:64px; margin:100px}
+        </style>
+
     </head>
+
     <body>
-    {% block body %}
-    {% endblock %}
+      <div class="w3-card" id="maintext">
+      <h1>Let's diffuse some animals</h1>
+      <p class="w3-large">Pick some values</p>
+        <div class="w3-container">
+          <form method=post enctype=multipart/form-data style="padding:32px">
+            <div class="w3-container">
+              <div class="slider">
+                <input type="range" min="0" max="1" value="0.05" oninput="diffCoefA.innerText = this.value" step="0.01">
+                <p id="diffCoefA">0.05</p>
+              </div>
+            </div>
+            <div class="w3-container">
+              <div class="slider">
+                <input type="range" min="0" max="2" value="0.1" oninput="diffCoefB.innerText = this.value" step="0.01">
+                <p id="diffCoefB">0.1</p>
+              </div>
+            </div>
+            <div class="w3-container">
+              <div class="slider">
+                <input type="range" min="0" max="2" value="0.1" oninput="diffCoefB.innerText = this.value" step="0.01">
+                <p id="diffCoefB">0.1</p>
+              </div>
+            </div>
+
+            <input class="w3-input" type=submit value=Generate>
+          </form>
+        </div>
+
+      </div>
     </body>
 </html>

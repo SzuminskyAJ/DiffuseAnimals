@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import imageio
 import os
+from initial_states import *
 
 filenames = []
 
@@ -15,32 +16,11 @@ def laplacian(Z):
     return (Ztop + Zleft + Zbottom + Zright -
             4 * Zcenter)
 
-def FitzHughModel(a,b,tau,k,L,s, size, n):
+def FitzHughModel(a, b, tau, k, L, s, size, n):
 
     dx = 2. / size
     dt = .001  # time step
     T = n * dt  # total time
-
-    # initial state of concentration of both chemicals
-    U = np.random.rand(size, size)
-    V = np.random.rand(size, size)
-
-
-    # Try a different initial state: circle
-    def create_circular_mask(h, w, center=None, radius=None):
-        """Returns a numpy array of the given size with all ones in a circle of given radius"""
-        if center is None:  # use the middle of the image
-            center = (int(w / 2), int(h / 2))
-        if radius is None:  # use the smallest distance between the center and image walls
-            radius = min(center[0], center[1], w - center[0], h - center[1])
-
-        Y, X = np.ogrid[:h, :w]
-        dist_from_center = np.sqrt((X - center[0]) ** 2 + (Y - center[1]) ** 2)
-
-        mask = dist_from_center <= radius
-
-        return mask.astype(int)
-
 
     # V = (~create_circular_mask(size, size, radius=size//4))
     U = np.ones((size, size))
