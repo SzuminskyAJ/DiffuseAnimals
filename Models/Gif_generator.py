@@ -49,7 +49,7 @@ def GrayScottModel(u, v, Lu, Lv, diffusionRateA, diffusionRateB, Feed, Kill):
     u += (diffusionRateA*Lu - (u*v*v) + Feed *(1-u))
     v += (diffusionRateB*Lv + (u*v*v) - (Feed+Kill)*v)
 
-def simulateGif(output, Model, InitialModel, diffusionA, diffusionB, noise, size, steps, parameters):
+def simulateGif(output, Model, InitialModel, diffusionA, diffusionB, noise, size, steps, **parameters):
     """
         simulateGif returns a gif of a Reaction-Diffusion
 
