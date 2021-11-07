@@ -19,10 +19,10 @@
       <h1>Let's diffuse some animals</h1>
       <p class="w3-large">This webapp models a reaction-diffusion system using two different sets of partial differential equations. Pick some values for the parameters of the simulation!</p>
         <div class="w3-container">
-          <form id="f_form" enctype=multipart/form-data style="padding:32px" onsubmit="onSubmit" action="">
+          <form id="f_form" enctype=multipart/form-data style="padding:32px" onsubmit="event.preventDefault(); onSubmit(event); return false;" action="">
             {%block fitzhugh_form%}{%endblock%}
           </form>
-          <form id="g_form" enctype=multipart/form-data style="padding:32px" onsubmit="onSubmit" class="hidden" action="">
+          <form id="g_form" enctype=multipart/form-data style="padding:32px" onsubmit="event.preventDefault(); onSubmit(event); return false;" class="hidden" action="">
             {%block grey_form%}{%endblock%}
           </form>
           <img id="output">
