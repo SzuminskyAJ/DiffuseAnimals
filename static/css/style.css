@@ -6,14 +6,13 @@ body {
  top:50%;
  left:50%;
  /*transform:translate(-50%,-50%);*/
- width:500px;
+ display: block;
+ width:300px;
  height:60px;
  padding:30px;
  margin: 5px;
- padding-left: 40px;
  background:#fcfcfc;
  border-radius:20px;
- display:flex;
  align-items:center;
  box-shadow:0px 5px 5px #7E6D5766;
 }
@@ -26,7 +25,7 @@ body {
 
 .slider input[type=”range”] {
  -webkit-appearance:none !important;
- width:420px;
+ width:250px;
  height:2px;
  background:#7E6D57;
  border:none;
