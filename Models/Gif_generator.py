@@ -5,8 +5,6 @@ import imageio
 import os
 import sys
 
-filenames = []
-
 def laplacian(Z):
     Ztop = Z[0:-2, 1:-1]
     Zleft = Z[1:-1, 0:-2]
@@ -51,47 +49,55 @@ def GrayScottModel(u, v, Lu, Lv, diffusionRateA, diffusionRateB, Feed, Kill):
     u += (diffusionRateA*Lu - (u*v*v) + Feed *(1-u))
     v += (diffusionRateB*Lv + (u*v*v) - (Feed+Kill)*v)
 
-def simulateGif(Model, InitialModel, diffusionRateA, diffusionRateB, noise, Size, Steps, Feed, Kill, Sigma, Lambda, Tau):
+def simulateGif(output, Model, InitialModel, diffusionA, diffusionB, noise, size, steps, parameters):
     """
         simulateGif returns a gif of a Reaction-Diffusion
 
+        :param output: Name of the output gif file
         :param Model: One of the two model used (Gray-Scott / FitzHugh–Nagumo)
         :param InitialModel: One of the initial model used (Random, Square, Circle)
-        :param diffusionRateA: Diffusion rate of A
-        :param diffusionRateB: Diffusion rate of B
-        :param noise: noise factor at start of simulation
-        :param Size: Size of the gif
-        :param Steps: The number of times to run the equation
-        :param Feed: Feed Variable
-        :param Kill: Kill Variable
-        :param Sigma: Sigma Variable
-        :param Lambda: Lambda Variable
-        :param Tau: Tau Variable
+        :param diffusionA: Diffusion rate of A
+        :param diffusionB: Diffusion rate of B
+        :param noise: Noise factor at start of simulation
+        :param size: Size of the gif
+        :param steps: The number of times to run the equation
+        :param parameters: model-specific parameters
     """
 
     # initial state of concentration of both chemicals
-    U = np.zeros((Size + 2, Size + 2), dtype = np.float64)
-    V = np.zeros((Size + 2, Size + 2), dtype = np.float64)
+    U = np.zeros((size + 2, size + 2), dtype = np.float64)
+    V = np.zeros((size + 2, size + 2), dtype = np.float64)
     # We take the values of u and v inside the grid.
     u = U[1:-1, 1:-1]
     v = V[1:-1, 1:-1]
 
     if InitialModel == "Square":
-        initSquare(u, v, Size)
+        initSquare(u, v, size)
     elif InitialModel == "Random":
-        initRandom(u, v, Size)
+        initRandom(u, v, size)
     elif InitialModel == "Circle":
-        initCircle(u, v, Size)
+        initCircle(u, v, size)
     else:
         print('Unknown starting model')
         sys.exit(1)
 
-    #Add random noise
+    # Add random noise
     u += noise*np.random.random(u.shape)
     v += noise*np.random.random(v.shape)
 
+    # Neumann conditions: derivatives at the edges
+    # are null.
+    for Z in (U, V):
+        Z[0, :] = Z[1, :]
+        Z[-1, :] = Z[-2, :]
+        Z[:, 0] = Z[:, 1]
+        Z[:, -1] = Z[:, -2]
+
+    # Store png file names
+    filenames = []
+
     # We simulate the PDE with the finite difference
-    for i in range(Steps):
+    for i in range(steps):
 
         # We compute the Laplacian of u and v.
         Lu = laplacian(U)
@@ -99,11 +105,11 @@ def simulateGif(Model, InitialModel, diffusionRateA, diffusionRateB, noise, Size
 
         # We update the variables. -- this is the part that changed the most!
         if Model == "Gray-Scott":
-            GrayScottModel(u, v, Lu, Lv, diffusionRateA, diffusionRateB, Feed, Kill)
-        elif Model == "FitzHugh–Nagumo":
-            FitzHughModel(u, v, Lu, Lv, diffusionRateA, diffusionRateB, Tau, Kill, Lambda, Sigma)
+            GrayScottModel(u, v, Lu, Lv, diffusionA, diffusionB, **parameters)
+        elif Model == "FitzHugh-Nagumo":
+            FitzHughModel(u, v, Lu, Lv, diffusionA, diffusionB, **parameters)
         else:
-            print('Unknown model')
+            print('Unknown model: ' + Model)
             sys.exit(1)
 
         # Neumann conditions: derivatives at the edges
@@ -118,11 +124,12 @@ def simulateGif(Model, InitialModel, diffusionRateA, diffusionRateB, noise, Size
         if i % 500 == 0:
             plt.imshow(U, interpolation='nearest')
             plt.axis("off")
-            plt.savefig(str(i) + '.png')
-            filenames.append(str(i) + '.png')
+            filename = 'images/' + output + str(i) + '.png'
+            plt.savefig(filename)
+            filenames.append(filename)
 
     # Create and save a GIF with all of the images
-    with imageio.get_writer('simulation.gif', mode='I') as writer:
+    with imageio.get_writer('images/' + output + '.gif', mode='I') as writer:
         for filename in filenames:
             image = imageio.imread(filename)
             writer.append_data(image)
@@ -133,5 +140,9 @@ def simulateGif(Model, InitialModel, diffusionRateA, diffusionRateB, noise, Size
 
 # *** Examples ***
 
-#simulateGif("Gray-Scott", "Square", 0.16, 0.08, 0.05, 256, 10000, 0.035, 0.060, 0, 0, 0)
-simulateGif("FitzHugh–Nagumo", "Circle", 0.0005 * 50**2, 0.005 * 50**2, 0.0001, 100, 10000, 0, 0.060, 1, 1, 0.1)
+if __name__ == '__main__':
+    # Feed, Kill, Sigma, Lambda, Tau
+    simulateGif("gray-scott", "Gray-Scott", "Square", 0.16, 0.08, 0.05, 256, 10000, { "Feed": 0.035, "Kill": 0.060 })
+    simulateGif("fitz-circle", "FitzHugh-Nagumo", "Circle", 0.0005 * 50**2, 0.005 * 50**2, 0.0001, 100, 10000, { "k": 0.060, "s": 1, "L": 1, "tau": 0.1 })
+    #simulateGif("fitz-square", "FitzHugh-Nagumo", "Square", 0.0005 * 50**2, 0.005 * 50**2, 0.0001, 100, 10000, 0, 0.060, 1, 1, 0.1)
+    #simulateGif("fitz-random", "FitzHugh-Nagumo", "Random", 0.0005 * 50**2, 0.005 * 50**2, 0.0001, 100, 10000, 0, 0.060, 1, 1, 0.1)
