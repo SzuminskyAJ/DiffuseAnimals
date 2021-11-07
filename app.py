@@ -9,7 +9,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route('/simulation.gif', methods=['GET'])
+@app.route('/simulation.gif', methods=['POST'])
 def simulation_gif():
     parameters = request.get_json()
     print(parameters)
